@@ -13,3 +13,40 @@
   </tr>
 </table>
 
+ <br> <br> <br> <br>
+### Lazy Grid UI Code
+
+
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(3),
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(uris) { url ->
+            Box(
+                modifier = Modifier
+                    .aspectRatio(1f)                    // Perfect square
+                    .clip(RoundedCornerShape(12.dp))    // Rounded corners on the cell
+                    .background(Color.LightGray)
+                    .clickable { /* optional */ }
+            ) {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data("$url")
+                        .crossfade(true) // Optional: nice fade-in effect
+                        .build(),
+                    contentDescription = "Grid image",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxSize()                  // This is the key!
+                        .background(Color.LightGray),   // fallback while loading
+                    placeholder = rememberAsyncImagePainter(url), // optional: smoother
+                   // error = painterResource(R.drawable.ic_error) // optional
+                )
+            }
+        }
+    }
+```
+
